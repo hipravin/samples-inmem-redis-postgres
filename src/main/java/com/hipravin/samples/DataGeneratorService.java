@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,6 +21,8 @@ public class DataGeneratorService {
     @Value("classpath:names/lastnames.txt")
     Resource lastNamesFile;
 
+    private static final AtomicInteger idCounter = new AtomicInteger(0);
+
     public Stream<EmployeeDto> randomEmployees() {
         try {
             List<String> firstNames = readLines(firstNamesFile);
@@ -29,6 +32,7 @@ public class DataGeneratorService {
             }
 
             Random random = new Random(0);
+
             return Stream.generate(() -> randomEmployee(random, firstNames, lastNames));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -40,7 +44,7 @@ public class DataGeneratorService {
         String firstName = firstNames.get(random.nextInt(firstNames.size()));
         String lastName = lastNames.get(random.nextInt(lastNames.size()));
 
-        String email = firstName + "." + lastName + "@mail.com";
+        String email = firstName + "." + lastName + idCounter.incrementAndGet() + "@mail.com";
         String emailLowerCase = email.toLowerCase();
 
         return new EmployeeDto(emailLowerCase, firstName, lastName);

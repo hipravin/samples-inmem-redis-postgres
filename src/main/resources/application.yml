@@ -1,4 +1,6 @@
-
+spring:
+  profiles:
+    active: local
 
 ---
 spring:
@@ -6,4 +8,15 @@ spring:
     activate:
       on-profile: local
 
-
+  datasource:
+    url: jdbc:postgresql://localhost:5432/employees
+    username: postgres
+    password: admin
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        generate_statistics: true
+        jdbc:
+          batch_size: 100
+        order_inserts: true
