@@ -47,13 +47,14 @@ public abstract class StreamBatchUtil {
 
         @Override
         public Spliterator<List<E>> trySplit() {
-            //not sure this is correct
-            if (base.estimateSize() <= batchSize) {
-                return null;
-            }
-            final Spliterator<E> splitBase = this.base.trySplit();
-            return splitBase == null ? null
-                    : new BatchSpliterator<>(splitBase, batchSize);
+            return null;
+            //not sure below is correct
+//            if (base.estimateSize() <= batchSize) {
+//                return null;
+//            }
+//            final Spliterator<E> splitBase = this.base.trySplit();
+//            return splitBase == null ? null
+//                    : new BatchSpliterator<>(splitBase, batchSize);
         }
 
         @Override

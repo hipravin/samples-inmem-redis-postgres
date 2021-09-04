@@ -1,7 +1,6 @@
 package com.hipravin.samples;
 
 import com.hipravin.samples.api.EmployeeDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -21,7 +21,7 @@ public class DataGeneratorService {
     @Value("classpath:names/lastnames.txt")
     Resource lastNamesFile;
 
-    private static final AtomicInteger idCounter = new AtomicInteger(0);
+    private static final AtomicLong idCounter = new AtomicLong(0);
 
     public Stream<EmployeeDto> randomEmployees() {
         try {
@@ -44,10 +44,10 @@ public class DataGeneratorService {
         String firstName = firstNames.get(random.nextInt(firstNames.size()));
         String lastName = lastNames.get(random.nextInt(lastNames.size()));
 
-        String email = firstName + "." + lastName + idCounter.incrementAndGet() + "@mail.com";
+        String email = firstName + "." + lastName + "@mail.com";
         String emailLowerCase = email.toLowerCase();
 
-        return new EmployeeDto(emailLowerCase, firstName, lastName);
+        return new EmployeeDto(idCounter.incrementAndGet(), emailLowerCase, firstName, lastName);
     }
 
     private static List<String> readLines(Resource resource) throws IOException {
@@ -55,6 +55,4 @@ public class DataGeneratorService {
             return lines.collect(Collectors.toList());
         }
     }
-
-
 }

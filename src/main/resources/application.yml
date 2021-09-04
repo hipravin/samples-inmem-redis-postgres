@@ -7,6 +7,9 @@ spring:
   config:
     activate:
       on-profile: local
+  redis:
+    port: 6379
+    host: localhost
 
   datasource:
     url: jdbc:postgresql://localhost:5432/employees

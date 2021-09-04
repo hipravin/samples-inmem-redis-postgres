@@ -1,6 +1,9 @@
 package com.hipravin.samples.api;
 
+import com.hipravin.samples.database.EmployeeEntity;
+
 public class EmployeeDto {
+    Long id;
     String email;
     String firstName;
     String lastName;
@@ -8,10 +11,27 @@ public class EmployeeDto {
     public EmployeeDto() {
     }
 
-    public EmployeeDto(String email, String firstName, String lastName) {
+    public EmployeeDto(Long id, String email, String firstName, String lastName) {
+        this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public static EmployeeDto fromEntity(EmployeeEntity employeeEntity) {
+        return new EmployeeDto(
+                employeeEntity.getId(),
+                employeeEntity.getEmail(),
+                employeeEntity.getFirstName(),
+                employeeEntity.getLastName());
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -41,7 +61,8 @@ public class EmployeeDto {
     @Override
     public String toString() {
         return "EmployeeDto{" +
-                "email='" + email + '\'' +
+                "id='" + id + '\'' +
+                ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';
