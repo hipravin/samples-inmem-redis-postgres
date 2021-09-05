@@ -23,6 +23,11 @@ public class EmployeeController {
         this.employeeDatabaseService = employeeDatabaseService;
     }
 
+    @GetMapping("/test")
+    ResponseEntity<?> test() {
+        return ResponseEntity.ok("Success");
+    }
+
     @GetMapping("/{impl}/byid/{id}")
     ResponseEntity<?> findById(@PathVariable("impl") String impl,
                                @PathVariable("id") Long id) {
