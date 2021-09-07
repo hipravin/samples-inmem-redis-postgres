@@ -4,16 +4,18 @@ import com.hipravin.samples.api.EmployeeDto;
 import com.hipravin.samples.database.EmployeeEntity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
 @RedisHash("Employee")
 public class EmployeeRedisHash {
     @Id
     private Long id;
 
+    @Indexed
     private String email;
-
+    @Indexed
     private String firstName;
-
+    @Indexed
     private String lastName;
 
     public EmployeeRedisHash() {
@@ -40,6 +42,14 @@ public class EmployeeRedisHash {
                 employeeEntity.getEmail(),
                 employeeEntity.getFirstName(),
                 employeeEntity.getLastName());
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {

@@ -26,7 +26,7 @@ public class EmployeeServicePerformanceIT {
     static AtomicLong completedCount = new AtomicLong(0);
 
     @Test
-    void perfFindById() throws InterruptedException {
+    void perfFindByIdDatabase() throws InterruptedException {
         RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
                 () -> "http://localhost:8080/api/v1/employee/database/byid/"
                         + ThreadLocalRandom.current().nextInt(1003000, 2003001));
@@ -37,7 +37,29 @@ public class EmployeeServicePerformanceIT {
     }
 
     @Test
-    void perfFindByEmail() throws InterruptedException {
+    void perfFindByIdRedis() throws InterruptedException {
+        RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
+                () -> "http://localhost:8080/api/v1/employee/redis/byid/"
+                        + ThreadLocalRandom.current().nextInt(1003000, 2003001));
+
+        Thread.sleep(10_000);
+
+        System.out.println("Stats: " + updatableStatistics.snapshot().toString());
+    }
+
+    @Test
+    void perfFindByIdInmem() throws InterruptedException {
+        RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
+                () -> "http://localhost:8080/api/v1/employee/inmemory/byid/"
+                        + ThreadLocalRandom.current().nextInt(1003000, 2003001));
+
+        Thread.sleep(10_000);
+
+        System.out.println("Stats: " + updatableStatistics.snapshot().toString());
+    }
+
+    @Test
+    void perfFindByEmailDatabse() throws InterruptedException {
         RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
                 () -> "http://localhost:8080/api/v1/employee/database/byemailexact/tyler.lewis@mail.com");
 
@@ -45,10 +67,39 @@ public class EmployeeServicePerformanceIT {
 
         System.out.println("Stats: " + updatableStatistics.snapshot().toString());
     }
+
     @Test
-    void perfFindByContains() throws InterruptedException {
+    void perfFindByEmailRedis() throws InterruptedException {
         RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
-                () -> "http://localhost:8080/api/v1/employee/database/bynamecontains/lewis");
+                () -> "http://localhost:8080/api/v1/employee/redis/byemailexact/tyler.lewis@mail.com");
+
+        Thread.sleep(10_000);
+
+        System.out.println("Stats: " + updatableStatistics.snapshot().toString());
+    }
+
+    @Test
+    void perfFindByEmailInemmory() throws InterruptedException {
+        RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
+                () -> "http://localhost:8080/api/v1/employee/inmemory/byemailexact/tyler.lewis@mail.com");
+
+        Thread.sleep(10_000);
+
+        System.out.println("Stats: " + updatableStatistics.snapshot().toString());
+    }
+    @Test
+    void perfFindByContainsDatabase() throws InterruptedException {
+        RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
+                () -> "http://localhost:8080/api/v1/employee/database/bynamecontains/ewis");
+
+        Thread.sleep(10_000);
+
+        System.out.println("Stats: " + updatableStatistics.snapshot().toString());
+    }
+    @Test
+    void perfFindByContainsInmem() throws InterruptedException {
+        RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
+                () -> "http://localhost:8080/api/v1/employee/inmemory/bynamecontains/ewis");
 
         Thread.sleep(10_000);
 

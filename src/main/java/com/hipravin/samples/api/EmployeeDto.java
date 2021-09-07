@@ -1,6 +1,8 @@
 package com.hipravin.samples.api;
 
 import com.hipravin.samples.database.EmployeeEntity;
+import com.hipravin.samples.inmemory.EmployeeImmutable;
+import com.hipravin.samples.redis.EmployeeRedisHash;
 
 public class EmployeeDto {
     Long id;
@@ -16,6 +18,23 @@ public class EmployeeDto {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+
+    public static EmployeeDto fromEmployeeImmutable(EmployeeImmutable employeeImmutable) {
+        return new EmployeeDto(
+                employeeImmutable.getId(),
+                employeeImmutable.getEmail(),
+                employeeImmutable.getFirstName(),
+                employeeImmutable.getLastName());
+    }
+
+    public static EmployeeDto fromRedisHash(EmployeeRedisHash employeeRedisHash) {
+        return new EmployeeDto(
+                employeeRedisHash.getId(),
+                employeeRedisHash.getEmail(),
+                employeeRedisHash.getFirstName(),
+                employeeRedisHash.getLastName());
     }
 
     public static EmployeeDto fromEntity(EmployeeEntity employeeEntity) {

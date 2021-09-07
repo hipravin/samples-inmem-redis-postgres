@@ -18,9 +18,15 @@ import java.util.Optional;
 public class EmployeeController {
 
     private final EmployeeService employeeDatabaseService;
+    private final EmployeeService employeeRedisService;
+    private final EmployeeService employeeInMemoryService;
 
-    public EmployeeController(@Qualifier("database") EmployeeService employeeDatabaseService) {
+    public EmployeeController(@Qualifier("database") EmployeeService employeeDatabaseService,
+                              @Qualifier("redis") EmployeeService employeeRedisService,
+                              @Qualifier("inmemory") EmployeeService employeeInMemoryService) {
         this.employeeDatabaseService = employeeDatabaseService;
+        this.employeeRedisService = employeeRedisService;
+        this.employeeInMemoryService = employeeInMemoryService;
     }
 
     @GetMapping("/test")
@@ -63,9 +69,9 @@ public class EmployeeController {
             case "database":
                 return employeeDatabaseService;
             case "redis":
-                return employeeDatabaseService;
+                return employeeRedisService;
             case "inmemory":
-                return employeeDatabaseService;
+                return employeeInMemoryService;
             default:
                 throw new IllegalArgumentException("No employeeService found matching: " + impl);
         }
