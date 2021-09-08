@@ -1,5 +1,6 @@
 package com.hipravin.samples.api;
 
+import com.hipravin.samples.jsonb.EmployeeJsonbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
