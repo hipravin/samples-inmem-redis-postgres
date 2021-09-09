@@ -1,23 +1,34 @@
 package com.hipravin.samples.jsonb;
 
 
-import javax.persistence.*;
+import com.vladmihalcea.hibernate.type.json.JsonType;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "EMPLOYEE_JSONB")
+@TypeDef(
+        name = "json",
+        typeClass = JsonType.class
+)
 public class EmployeeJsonb {
     @Id
     @Column(name = "ID")
     private Long id;
-//    @Lob
-//    @Column(name = "CONTENT")
-    @Transient
-    private byte[] content;
+
+    @Type(type = "json")
+    @Column(name = "CONTENT", columnDefinition = "jsonb")
+    private String content;
 
     public EmployeeJsonb() {
     }
 
-    public EmployeeJsonb(Long id, byte[] content) {
+    public EmployeeJsonb(Long id, String content) {
         this.id = id;
         this.content = content;
     }
@@ -30,11 +41,11 @@ public class EmployeeJsonb {
         this.id = id;
     }
 
-    public byte[] getContent() {
+    public String getContent() {
         return content;
     }
 
-    public void setContent(byte[] content) {
+    public void setContent(String content) {
         this.content = content;
     }
 }

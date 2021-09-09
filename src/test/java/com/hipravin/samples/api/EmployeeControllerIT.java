@@ -25,7 +25,7 @@ class EmployeeControllerIT {
     @Test
     void testFindById() {
         ResponseEntity<String> sampleFind =
-                restTemplate.getForEntity("http://localhost:" + port + "/api/v1/employee/database/byid/1003001", String.class);
+                restTemplate.getForEntity("http://localhost:" + port + "/api/v1/employee/database/byid/3001", String.class);
 
         assertEquals(HttpStatus.OK, sampleFind.getStatusCode());
         assertNotNull(sampleFind.getBody());

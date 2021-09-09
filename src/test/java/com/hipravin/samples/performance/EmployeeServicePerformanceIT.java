@@ -3,6 +3,7 @@ package com.hipravin.samples.performance;
 import com.hipravin.samples.util.RestPerformanceTester;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +20,19 @@ import java.util.concurrent.atomic.AtomicLong;
 public class EmployeeServicePerformanceIT {
     @Autowired
     RestTemplateBuilder restTemplateBuilder;
-    
+
     @Autowired
     RestPerformanceTester restPerformanceTester;
 
     static AtomicLong completedCount = new AtomicLong(0);
 
+    @Value("${server.port}")
+    String port;
+
     @Test
     void perfFindByIdDatabase() throws InterruptedException {
         RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
-                () -> "http://localhost:8080/api/v1/employee/database/byid/"
+                () -> "http://localhost:" + port + "/api/v1/employee/database/byid/"
                         + ThreadLocalRandom.current().nextInt(1003000, 2003001));
 
         Thread.sleep(10_000);
@@ -39,7 +43,7 @@ public class EmployeeServicePerformanceIT {
     @Test
     void perfFindByIdRedis() throws InterruptedException {
         RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
-                () -> "http://localhost:8080/api/v1/employee/redis/byid/"
+                () -> "http://localhost:"+ port +"/api/v1/employee/redis/byid/"
                         + ThreadLocalRandom.current().nextInt(1003000, 2003001));
 
         Thread.sleep(10_000);
@@ -50,7 +54,7 @@ public class EmployeeServicePerformanceIT {
     @Test
     void perfFindByIdInmem() throws InterruptedException {
         RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
-                () -> "http://localhost:8080/api/v1/employee/inmemory/byid/"
+                () -> "http://localhost:" + port + "/api/v1/employee/inmemory/byid/"
                         + ThreadLocalRandom.current().nextInt(1003000, 2003001));
 
         Thread.sleep(10_000);
@@ -61,7 +65,17 @@ public class EmployeeServicePerformanceIT {
     @Test
     void perfFindByEmailDatabse() throws InterruptedException {
         RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
-                () -> "http://localhost:8080/api/v1/employee/database/byemailexact/tyler.lewis@mail.com");
+                () -> "http://localhost:" + port + "/api/v1/employee/database/byemailexact/tyler.lewis@mail.com");
+
+        Thread.sleep(10_000);
+
+        System.out.println("Stats: " + updatableStatistics.snapshot().toString());
+    }
+
+    @Test
+    void perfFindByEmailJsonb() throws InterruptedException {
+        RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
+                () -> "http://localhost:" + port + "/api/v1/employee/jsonb/byemailexact/tyler.lewis@mail.com");
 
         Thread.sleep(10_000);
 
@@ -71,7 +85,7 @@ public class EmployeeServicePerformanceIT {
     @Test
     void perfFindByEmailRedis() throws InterruptedException {
         RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
-                () -> "http://localhost:8080/api/v1/employee/redis/byemailexact/tyler.lewis@mail.com");
+                () -> "http://localhost:" + port + "/api/v1/employee/redis/byemailexact/tyler.lewis@mail.com");
 
         Thread.sleep(10_000);
 
@@ -81,25 +95,27 @@ public class EmployeeServicePerformanceIT {
     @Test
     void perfFindByEmailInemmory() throws InterruptedException {
         RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
-                () -> "http://localhost:8080/api/v1/employee/inmemory/byemailexact/tyler.lewis@mail.com");
+                () -> "http://localhost:" + port + "/api/v1/employee/inmemory/byemailexact/tyler.lewis@mail.com");
 
         Thread.sleep(10_000);
 
         System.out.println("Stats: " + updatableStatistics.snapshot().toString());
     }
+
     @Test
     void perfFindByContainsDatabase() throws InterruptedException {
         RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
-                () -> "http://localhost:8080/api/v1/employee/database/bynamecontains/ewis");
+                () -> "http://localhost:" + port + "/api/v1/employee/database/bynamecontains/ewis");
 
         Thread.sleep(10_000);
 
         System.out.println("Stats: " + updatableStatistics.snapshot().toString());
     }
+
     @Test
     void perfFindByContainsInmem() throws InterruptedException {
         RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
-                () -> "http://localhost:8080/api/v1/employee/inmemory/bynamecontains/ewis");
+                () -> "http://localhost:" + port + "/api/v1/employee/inmemory/bynamecontains/ewis");
 
         Thread.sleep(10_000);
 
@@ -118,10 +134,10 @@ public class EmployeeServicePerformanceIT {
         System.out.println("Total completed: " + completedCount);
     }
 
-    public static void infiniteSampeRt(RestTemplate restTemplate) {
+    public void infiniteSampeRt(RestTemplate restTemplate) {
         CompletableFuture.runAsync(() -> {
             ResponseEntity<String> responseEntity =
-                    restTemplate.getForEntity("http://localhost:8080/api/v1/employee/database/byid/1003001", String.class);
+                    restTemplate.getForEntity("http://localhost:" + port + "/api/v1/employee/database/byid/3001", String.class);
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
                 completedCount.incrementAndGet();
             }
@@ -132,7 +148,7 @@ public class EmployeeServicePerformanceIT {
 
     @Test
     void testSampleWebClient() throws InterruptedException {
-        WebClient client = WebClient.create("http://localhost:8080");
+        WebClient client = WebClient.create("http://localhost:" + port + "");
 
 
         for (int i = 0; i < 4; i++) {
@@ -154,7 +170,7 @@ public class EmployeeServicePerformanceIT {
 
     @Test
     void testFindById() throws InterruptedException {
-        WebClient client = WebClient.create("http://localhost:8080");
+        WebClient client = WebClient.create("http://localhost:" + port + "");
 
 
         for (int i = 0; i < 4; i++) {
@@ -166,11 +182,11 @@ public class EmployeeServicePerformanceIT {
     }
 
     public static void infiniteById(WebClient client) {
-        byid(client, "database", 1003001L)
+        byid(client, "database", 3001L)
                 .subscribe(s -> {
-            completedCount.incrementAndGet();
-            infiniteById(client);
-        });
+                    completedCount.incrementAndGet();
+                    infiniteById(client);
+                });
     }
 
     public static Mono<String> byid(WebClient client, String impl, Long id) {

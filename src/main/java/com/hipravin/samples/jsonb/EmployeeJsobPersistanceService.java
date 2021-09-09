@@ -20,7 +20,7 @@ public class EmployeeJsobPersistanceService {
 
     public void saveAll(Stream<EmployeeDto> employeeDtoStream) {
         Stream<EmployeeJsonb> employeeJsonbStream = employeeDtoStream
-                .map(e -> new EmployeeJsonb(e.getId(), serializeToJson(e).getBytes(StandardCharsets.UTF_8)));
+                .map(e -> new EmployeeJsonb(e.getId(), serializeToJson(e)));
 
         employeeJsonbRepository.saveAll((Iterable<? extends EmployeeJsonb>) employeeJsonbStream::iterator) ;
     }

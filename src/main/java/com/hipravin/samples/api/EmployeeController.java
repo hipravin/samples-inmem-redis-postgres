@@ -21,13 +21,16 @@ public class EmployeeController {
     private final EmployeeService employeeDatabaseService;
     private final EmployeeService employeeRedisService;
     private final EmployeeService employeeInMemoryService;
+    private final EmployeeService employeeJsonbService;
 
     public EmployeeController(@Qualifier("database") EmployeeService employeeDatabaseService,
                               @Qualifier("redis") EmployeeService employeeRedisService,
-                              @Qualifier("inmemory") EmployeeService employeeInMemoryService) {
+                              @Qualifier("inmemory") EmployeeService employeeInMemoryService,
+                              @Qualifier("jsonb") EmployeeService employeeJsonbService) {
         this.employeeDatabaseService = employeeDatabaseService;
         this.employeeRedisService = employeeRedisService;
         this.employeeInMemoryService = employeeInMemoryService;
+        this.employeeJsonbService = employeeJsonbService;
     }
 
     @GetMapping("/test")
@@ -73,6 +76,8 @@ public class EmployeeController {
                 return employeeRedisService;
             case "inmemory":
                 return employeeInMemoryService;
+            case "jsonb":
+                return employeeJsonbService;
             default:
                 throw new IllegalArgumentException("No employeeService found matching: " + impl);
         }

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 @ActiveProfiles({"local"})
-@Transactional
+//@Transactional
 class EmployeeRepositoryIT {
     @Autowired
     EmployeeRepository employeeRepository;

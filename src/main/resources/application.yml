@@ -1,6 +1,8 @@
 spring:
   profiles:
     active: local
+server:
+  port: 8082
 
 ---
 spring:
@@ -16,10 +18,10 @@ spring:
     username: postgres
     password: admin
   jpa:
-    show-sql: true
+#    show-sql: true
     properties:
       hibernate:
-        generate_statistics: true
+#        generate_statistics: true
         jdbc:
           batch_size: 100
         order_inserts: true
