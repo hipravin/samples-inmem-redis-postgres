@@ -111,6 +111,16 @@ public class EmployeeServicePerformanceIT {
 
         System.out.println("Stats: " + updatableStatistics.snapshot().toString());
     }
+    //3.4 sec each - sooooo slow
+    @Test
+    void perfFindByContainsJsonb() throws InterruptedException {
+        RestPerformanceTester.UpdatableStatistics updatableStatistics = restPerformanceTester.randomInfiniteGet(4,
+                () -> "http://localhost:" + port + "/api/v1/employee/jsonb/bynamecontains/ewis");
+
+        Thread.sleep(10_000);
+
+        System.out.println("Stats: " + updatableStatistics.snapshot().toString());
+    }
 
     @Test
     void perfFindByContainsInmem() throws InterruptedException {

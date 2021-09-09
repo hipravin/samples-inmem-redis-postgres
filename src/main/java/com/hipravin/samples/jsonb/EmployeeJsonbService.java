@@ -37,7 +37,9 @@ public class EmployeeJsonbService implements EmployeeService {
 
     @Override
     public List<EmployeeDto> findByFirstNameOrLastNameContains(String containsString) {
-        return null;
+        return employeeJsonbRepository.findByFirstnameContainsOrLastNameContains(containsString)
+                .stream().map(e -> fromJsonQuiet(e.getContent()))
+                .collect(Collectors.toList());
     }
 
     private EmployeeDto fromJsonQuiet(String json) {

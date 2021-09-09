@@ -22,4 +22,12 @@ class EmployeeJsonbServiceIT {
 
         assertFalse(employeeDtoList.isEmpty());
     }
+    @Test
+    void testFindByContains() {
+        List<EmployeeDto> employeeDtoList = employeeJsonbService.findByFirstNameOrLastNameContains("yan");
+
+
+
+        assertFalse(employeeDtoList.isEmpty());
+    }
 }
