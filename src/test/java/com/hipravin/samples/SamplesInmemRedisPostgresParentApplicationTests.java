@@ -10,4 +10,7 @@ class SamplesInmemRedisPostgresParentApplicationTests {
     void contextLoads() {
     }
 
+    //1
+    //2
+    //3
 }
