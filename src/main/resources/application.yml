@@ -1,6 +1,12 @@
 spring:
   profiles:
     active: local
+    group:
+      localall:
+        - "local"
+        - "swagger"
+        - "runners"
+        - "prometheus"
 server:
   port: 8082
 
@@ -18,10 +24,28 @@ spring:
     username: postgres
     password: admin
   jpa:
-#    show-sql: true
+    #    show-sql: true
     properties:
       hibernate:
-#        generate_statistics: true
+        #        generate_statistics: true
         jdbc:
           batch_size: 100
         order_inserts: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prometheus
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    tags:
+      application: samples-inmem-redis-postgres
