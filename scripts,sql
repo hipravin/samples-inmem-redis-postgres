@@ -1,0 +1,55 @@
+DROP SEQUENCE EMP_ID_SEQ;
+
+CREATE SEQUENCE EMP_ID_SEQ
+    START WITH 2000
+    INCREMENT BY 1000;
+
+CREATE TABLE EMPLOYEE (
+   ID NUMERIC(19,0) NOT NULL PRIMARY KEY,
+   EMAIL VARCHAR(50) NOT NULL,
+   FIRST_NAME VARCHAR(50) NOT NULL,
+   LAST_NAME VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE EMPLOYEE_JSONB (
+   ID NUMERIC(19,0) NOT NULL PRIMARY KEY,
+   CONTENT JSONB
+);
+
+delete from EMPLOYEE_JSONB where 1=1;
+
+insert into EMPLOYEE_JSONB (ID, CONTENT) VALUES (
+                                                 1003001,
+'{  "id": 1003001,  "email": "tyler.lewis@mail.com",  "firstName": "Tyler",  "lastName": "Lewis"}'::jsonb
+                                                );
+select * from EMPLOYEE_JSONB;
+
+CREATE INDEX idxgin ON EMPLOYEE_JSONB USING GIN (content);
+
+select * from EMPLOYEE_JSONB where CONTENT @> '"ryan"'::jsonb;
+
+select * from EMPLOYEE_JSONB where CONTENT::json->>'firstName' like '%yan%';
+select * from EMPLOYEE_JSONB where CONTENT->>'firstName' like '%yan%';
+
+select count(*) from EMPLOYEE_JSONB;
+
+insert into EMPLOYEE (ID, EMAIL, FIRST_NAME, LAST_NAME) VALUES (123456789, 't@t1', '1', '11');
+
+delete from EMPLOYEE where ID = 123456789;
+
+
+drop table  EMPLOYEE;
+
+select * from EMPLOYEE order by ID ;
+
+select count(*) from EMPLOYEE;
+
+delete from EMPLOYEE where 1=1;
+
+explain
+   select * from employee where email = 'tyler.lewis1@mail.com';
+
+create index EMAIL_IDX on EMPLOYEE(email);
+
+explain
+   select * from employee where FIRST_NAME like  '%tyler%';
