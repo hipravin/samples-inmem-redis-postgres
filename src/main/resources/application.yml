@@ -7,6 +7,11 @@ spring:
         - "swagger"
         - "runners"
         - "prometheus"
+      localdocker:
+        - "docker-local"
+        - "swagger"
+        - "runners"
+        - "prometheus"
 server:
   port: 8082
 
@@ -21,6 +26,28 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/employees
+    username: postgres
+    password: admin
+  jpa:
+    #    show-sql: true
+    properties:
+      hibernate:
+        #        generate_statistics: true
+        jdbc:
+          batch_size: 100
+        order_inserts: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker-local
+  redis:
+    port: 6379
+    host: host.docker.internal
+
+  datasource:
+    url: jdbc:postgresql://host.docker.internal:5432/employees
     username: postgres
     password: admin
   jpa:

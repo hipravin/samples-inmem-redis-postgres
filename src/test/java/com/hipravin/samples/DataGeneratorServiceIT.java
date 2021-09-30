@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class DataGeneratorServiceTest {
+class DataGeneratorServiceIT {
 
     @Autowired
     DataGeneratorService dataGeneratorService;
