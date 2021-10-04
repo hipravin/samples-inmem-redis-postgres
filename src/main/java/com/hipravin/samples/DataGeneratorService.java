@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Random;
@@ -51,7 +53,7 @@ public class DataGeneratorService {
     }
 
     private static List<String> readLines(Resource resource) throws IOException {
-        try (Stream<String> lines = Files.lines(resource.getFile().toPath())) {
+        try (Stream<String> lines = new BufferedReader(new InputStreamReader(resource.getInputStream())).lines()) {
             return lines.collect(Collectors.toList());
         }
     }

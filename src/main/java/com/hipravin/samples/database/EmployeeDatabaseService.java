@@ -22,6 +22,11 @@ public class EmployeeDatabaseService implements EmployeeService {
     }
 
     @Override
+    public Long count() {
+        return employeeRepository.count();
+    }
+
+    @Override
     public Optional<EmployeeDto> findById(Long id) {
         return employeeRepository.findById(id).map(EmployeeDto::fromEntity);
     }

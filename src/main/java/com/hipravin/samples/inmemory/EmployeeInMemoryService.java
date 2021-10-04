@@ -19,6 +19,11 @@ public class EmployeeInMemoryService implements EmployeeService {
     }
 
     @Override
+    public Long count() {
+        return employeeInMemoryRepository.count();
+    }
+
+    @Override
     public Optional<EmployeeDto> findById(Long id) {
         return employeeInMemoryRepository.findById(id)
                 .map(EmployeeDto::fromEmployeeImmutable);

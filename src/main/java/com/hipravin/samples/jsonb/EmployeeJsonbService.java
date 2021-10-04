@@ -23,6 +23,11 @@ public class EmployeeJsonbService implements EmployeeService {
     }
 
     @Override
+    public Long count() {
+        return employeeJsonbRepository.count();
+    }
+
+    @Override
     public Optional<EmployeeDto> findById(Long id) {
         return employeeJsonbRepository.findById(id)
                 .map(e -> fromJsonQuiet(e.getContent()));

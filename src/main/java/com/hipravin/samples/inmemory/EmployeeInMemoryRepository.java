@@ -36,6 +36,10 @@ public class EmployeeInMemoryRepository {
         });
     }
 
+    public long count() {
+        return getWithReadLock(() -> idToEmployee.size());
+    }
+
     public Optional<EmployeeImmutable> findById(Long id) {
         return getWithReadLock(() -> Optional.ofNullable(idToEmployee.get(id)));
 

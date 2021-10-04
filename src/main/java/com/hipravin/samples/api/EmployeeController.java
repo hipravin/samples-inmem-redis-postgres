@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -31,6 +33,16 @@ public class EmployeeController {
         this.employeeRedisService = employeeRedisService;
         this.employeeInMemoryService = employeeInMemoryService;
         this.employeeJsonbService = employeeJsonbService;
+    }
+    @GetMapping("/counts")
+    ResponseEntity<?> info() {
+        Map<String, Long> counts = new LinkedHashMap<>();
+        counts.put("database", employeeDatabaseService.count());
+        counts.put("redis", employeeRedisService.count());
+        counts.put("inmemory", employeeInMemoryService.count());
+        counts.put("jsonb", employeeJsonbService.count());
+
+        return ResponseEntity.ok(counts);
     }
 
     @GetMapping("/test")

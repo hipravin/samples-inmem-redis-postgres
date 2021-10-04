@@ -22,6 +22,11 @@ public class EmployeeRedisService implements EmployeeService {
     }
 
     @Override
+    public Long count() {
+        return employeeRedisRepository.count();
+    }
+
+    @Override
     public Optional<EmployeeDto> findById(Long id) {
         return employeeRedisRepository.findById(id).map(EmployeeDto::fromRedisHash);
     }

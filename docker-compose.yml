@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    image: samples/samples-inmem-redis-postgres
+    ports:
+      - "8082:8082"
+    depends_on:
+      - redis
+      - db
+
+  redis:
+    image: redis:6.2.5-alpine
+    ports:
+      - "6379:6379"
+
+  db:
+    image: postgres:14.0
+    environment:
+      - POSTGRES_DB=employees
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - "5432:5432"
