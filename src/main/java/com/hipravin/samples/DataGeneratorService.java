@@ -52,8 +52,14 @@ public class DataGeneratorService {
         return new EmployeeDto(idCounter.incrementAndGet(), emailLowerCase, firstName, lastName);
     }
 
+//    private static List<String> readLines(Resource resource) throws IOException {
+//        try (Stream<String> lines = new BufferedReader(new InputStreamReader(resource.getInputStream())).lines()) {
+//            return lines.collect(Collectors.toList());
+//        }
+//    }
     private static List<String> readLines(Resource resource) throws IOException {
-        try (Stream<String> lines = new BufferedReader(new InputStreamReader(resource.getInputStream())).lines()) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+             Stream<String> lines = reader.lines()) {
             return lines.collect(Collectors.toList());
         }
     }

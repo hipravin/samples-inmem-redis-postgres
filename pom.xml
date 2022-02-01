@@ -14,7 +14,9 @@
     <name>samples-inmem-redis-postgres-parent</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
@@ -68,6 +70,12 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
@@ -84,6 +92,55 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M2</version>
+                <!--<dependencies> -->
+                <!--<dependency> -->
+                <!--<groupId>com.baeldung</groupId> -->
+                <!--<artifactId>custom-rule</artifactId> -->
+                <!--<version>1.0</version> -->
+                <!--</dependency> -->
+                <!--</dependencies> -->
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <banDuplicatePomDependencyVersions>
+                                    <level>WARN</level> <!-- build won't fail with WARN, remove to fail -->
+                                </banDuplicatePomDependencyVersions>
+                                <requireMavenVersion>
+                                    <version>3.0</version>
+                                    <message>Invalid Maven version. It should, at least, be 3.0</message>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>1.8</version>
+                                </requireJavaVersion>
+                                <requireEnvironmentVariable>
+                                    <variableName>ui</variableName>
+                                    <level>WARN</level>
+                                </requireEnvironmentVariable>
+                                <requireEnvironmentVariable>
+                                    <variableName>cook</variableName>
+                                    <level>WARN</level>
+                                </requireEnvironmentVariable>
+                                <requireActiveProfile>
+                                    <profiles>local,base</profiles>
+                                    <message>Missing active profiles</message>
+                                    <level>WARN</level>
+                                </requireActiveProfile>
+                                <!--other rules -->
+                                <!--<myCustomRule implementation="com.baeldung.enforcer.MyCustomRule"/> -->
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
